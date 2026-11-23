@@ -13,10 +13,6 @@ function rgba(hex, alpha) {
   return `rgba(${r}, ${g}, ${b}, ${alpha})`;
 }
 
-function lerp(a, b, t) {
-  return a + (b - a) * t;
-}
-
 function resolveQuality(setting) {
   if (setting === 'low' || setting === 'high') return setting;
   const coarse = typeof window.matchMedia === 'function' && window.matchMedia('(pointer: coarse)').matches;
@@ -206,8 +202,8 @@ export class Renderer {
 
   cellToPx(x, y) {
     return {
-      x: this.ox + (x + 0.5) * this.cell,
-      y: this.oy + (y + 0.5) * this.cell,
+      x: this.ox + x * this.cell,
+      y: this.oy + y * this.cell,
     };
   }
 
@@ -362,18 +358,14 @@ export class Renderer {
   }
 
   computePoints(game) {
-    const t = game.alive ? game.getTickProgress() : 1;
     const snake = game.snake;
-    const prev = game.prevSnake;
     const points = this.points;
     points.length = snake.length;
     for (let i = 0; i < snake.length; i++) {
-      const cur = snake[i];
-      const old = prev[i] || cur;
-      const wrapped = Math.abs(cur.x - old.x) > 1.5 || Math.abs(cur.y - old.y) > 1.5;
+      const segment = snake[i];
       const point = points[i] || (points[i] = { x: 0, y: 0 });
-      point.x = wrapped ? cur.x : lerp(old.x, cur.x, t);
-      point.y = wrapped ? cur.y : lerp(old.y, cur.y, t);
+      point.x = segment.x;
+      point.y = segment.y;
     }
     return points;
   }
@@ -460,14 +452,40 @@ export class Renderer {
 
     if (game.buffs.shield || game.buffs.shieldPhase > 0) {
       const blinking = game.buffs.shieldPhase > 0;
-      const flicker = blinking ? 0.45 + 0.55 * Math.abs(Math.sin(now / 55)) : 0.85;
+      const flicker = blinking ? 0.45 + 0.55 * Math.abs(Math.sin(now / 55)) : 0.9;
+      const pulse = 1 + 0.06 * Math.sin(now / 160);
       ctx.save();
-      ctx.strokeStyle = rgba(this.shieldColor(), flicker);
-      ctx.lineWidth = Math.max(2, this.cell * 0.08);
+      ctx.globalCompositeOperation = 'lighter';
+      // 蛇身护盾罩：沿整条身体的宽描边
+      ctx.strokeStyle = rgba('#4da3ff', 0.16 * flicker);
+      ctx.lineWidth = this.cell * 1.05;
+      ctx.lineJoin = 'round';
+      ctx.lineCap = 'round';
+      this.strokeSnakePath(ctx, points);
+      // 头部泡泡 + 高光弧
+      const bubble = this.cell * 0.78 * pulse;
+      ctx.fillStyle = rgba('#4da3ff', 0.1 * flicker);
       ctx.beginPath();
-      ctx.arc(headPx.x, headPx.y, this.cell * (0.52 + 0.03 * Math.sin(now / 120)), 0, R_TAU);
+      ctx.arc(headPx.x, headPx.y, bubble, 0, R_TAU);
+      ctx.fill();
+      ctx.strokeStyle = rgba('#9ccaff', flicker);
+      ctx.lineWidth = Math.max(2, this.cell * 0.07);
+      ctx.beginPath();
+      ctx.arc(headPx.x, headPx.y, bubble, 0, R_TAU);
+      ctx.stroke();
+      ctx.strokeStyle = rgba('#eaf6ff', 0.55 * flicker);
+      ctx.lineWidth = Math.max(1.5, this.cell * 0.04);
+      ctx.beginPath();
+      ctx.arc(headPx.x, headPx.y, bubble * 0.86, -Math.PI * 0.9, -Math.PI * 0.25);
       ctx.stroke();
       ctx.restore();
+    }
+
+    // 增益光环：双倍金色 / 减速紫色
+    if (game.buffs.doubleRemaining > 0) {
+      this.drawGlow(ctx, '#ffd23f', headPx.x, headPx.y, this.cell * 1.8);
+    } else if (game.buffs.slowRemaining > 0) {
+      this.drawGlow(ctx, '#a04dff', headPx.x, headPx.y, this.cell * 1.8);
     }
   }
 
@@ -481,7 +499,7 @@ export class Renderer {
     ctx.globalCompositeOperation = 'lighter';
     for (const particle of effects.particles) {
       const alpha = Math.max(0, particle.life / particle.maxLife);
-      const px = this.cellToPx(particle.x - 0.5, particle.y - 0.5);
+      const px = this.cellToPx(particle.x, particle.y);
       ctx.fillStyle = rgba(particle.color, alpha);
       ctx.beginPath();
       ctx.arc(px.x, px.y, Math.max(1, particle.size * this.cell), 0, R_TAU);
@@ -498,7 +516,7 @@ export class Renderer {
     ctx.font = `bold ${Math.max(12, this.cell * 0.5)}px "Segoe UI", system-ui, sans-serif`;
     for (const float of effects.floats) {
       const alpha = Math.max(0, float.life / float.maxLife);
-      const px = this.cellToPx(float.x - 0.5, float.y - 0.5);
+      const px = this.cellToPx(float.x, float.y);
       ctx.globalAlpha = alpha;
       ctx.fillStyle = float.color;
       ctx.fillText(float.text, px.x, px.y);

@@ -24,11 +24,11 @@
     <div id="buffBar" class="buff-bar">
       <div id="buffShield" class="buff-chip hidden"><span class="buff-icon">盾</span>护盾就绪</div>
       <div id="buffSlow" class="buff-chip hidden">
-        <span class="buff-icon">缓</span><span id="buffSlowTime">8.0s</span>
+        <span class="buff-icon">缓</span><span>减速 30%</span><span id="buffSlowTime">8.0s</span>
         <i class="buff-progress"><b id="buffSlowBar"></b></i>
       </div>
       <div id="buffDouble" class="buff-chip hidden">
-        <span class="buff-icon">×2</span><span id="buffDoubleTime">10.0s</span>
+        <span class="buff-icon">×2</span><span>双倍</span><span id="buffDoubleTime">10.0s</span>
         <i class="buff-progress"><b id="buffDoubleBar"></b></i>
       </div>
     </div>
@@ -47,7 +47,7 @@
     <p id="menuStats" class="footnote"></p>
     <p class="footnote dim">
       <span class="desktop-hint">方向键 / WASD 转向 · 空格暂停 · 手机滑动屏幕</span>
-      <span class="mobile-hint">滑动屏幕或使用左下方向键转向</span>
+      <span class="mobile-hint">滑动屏幕或拖动左下摇杆转向</span>
     </p>
   </div>
 
@@ -102,24 +102,22 @@
     <div class="panel wide">
       <h2>玩法</h2>
       <ul class="help-list">
+        <li>360° 连续移动：手机用左下摇杆或滑动，PC 用方向键 / WASD 设定四个基准方向</li>
         <li>吃果实变长：普通 +10，金果实 +50（6 秒内不吃会消失）</li>
         <li>3 秒内连续吃到果实触发连击，得分倍率最高 ×5</li>
-        <li>护盾：抵消一次撞墙 / 自撞，并让蛇穿行 1 秒</li>
-        <li>减速：8 秒内速度降低 30%，救急用</li>
-        <li>双倍：10 秒内所有得分 ×2</li>
+        <li>护盾：蛇身外会出现蓝色罩子，抵消一次撞墙 / 自撞，并穿行 1 秒</li>
+        <li>减速：紫色光环，8 秒内速度降低 30%</li>
+        <li>双倍：金色光环，10 秒内所有得分 ×2</li>
         <li>悠闲档穿墙不死，经典 / 狂暴档撞墙即死</li>
         <li>设置里可切换皮肤（霓虹 / 极光 / 熔岩）与画质（高清 / 流畅）</li>
-        <li>键盘：方向键 / WASD 转向，空格暂停，M 静音；手机：滑动屏幕转向</li>
+        <li>键盘：方向键 / WASD 转向，空格暂停，M 静音；手机：摇杆或滑动转向，方向可连续变化</li>
       </ul>
       <button id="btnHelpClose" class="ghost-btn">知道了</button>
     </div>
   </div>
 
-  <div id="dpad" class="dpad">
-    <button class="dpad-btn dpad-up" data-dir="up" aria-label="上">▲</button>
-    <button class="dpad-btn dpad-left" data-dir="left" aria-label="左">◀</button>
-    <button class="dpad-btn dpad-right" data-dir="right" aria-label="右">▶</button>
-    <button class="dpad-btn dpad-down" data-dir="down" aria-label="下">▼</button>
+  <div id="joystick" class="joystick" aria-label="移动摇杆">
+    <div id="joystickKnob" class="joystick-knob"></div>
   </div>
 
   <div id="toastLayer" class="toast-layer"></div>

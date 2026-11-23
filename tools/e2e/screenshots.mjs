@@ -104,6 +104,15 @@ async function main() {
     await sleep(300);
     await shot(cdp, 'game-mobile.png');
 
+    // 护盾与增益表现
+    await evaluate(cdp, `(() => {
+      const g = __neonSnake.getGame();
+      g.buffs.shield = true;
+      g.buffs.doubleRemaining = 10000;
+    })()`);
+    await sleep(400);
+    await shot(cdp, 'shield-2d.png');
+
     // 桌面尺寸
     await cdp.send('Emulation.setDeviceMetricsOverride', { width: 1280, height: 800, deviceScaleFactor: 1, mobile: false });
     await sleep(400);

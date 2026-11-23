@@ -10,6 +10,17 @@ export const COMBO = {
   max: 5,         // 倍率上限 x5
 };
 
+// 连续移动（360°）身体参数：单位=格
+export const BODY = {
+  spacing: 0.5,          // 相邻体节间距
+  headRadius: 0.42,      // 头部碰撞半径（墙边距）
+  eatRadius: 0.9,        // 拾取食物半径
+  selfHitIndex: 5,       // 忽略靠近头部的体节
+  selfHitDistance: 0.6,  // 自撞判定距离
+  interHitDistance: 0.85,// 联机互撞距离
+  turnRate: 11,          // 最大转向角速度（弧度/秒）
+};
+
 export const BUFF = {
   slowMultiplier: 0.7,     // 减速期间速度倍率
   slowDuration: 8000,      // 减速持续

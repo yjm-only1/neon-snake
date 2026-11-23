@@ -1,6 +1,6 @@
 # 霓虹贪吃蛇 · Neon Snake
 
-零依赖、纯 Canvas 的网页贪吃蛇：霓虹街机视觉 + 连击倍率 + 5 种道具果实 + 三档难度 + 合成音效，打开浏览器即玩。支持三套皮肤、画质自动/高清/流畅与手机触屏方向键。
+零依赖、纯 Canvas 的网页贪吃蛇：霓虹街机视觉 + 360° 连续移动 + 连击倍率 + 5 种道具果实 + 三档难度 + 合成音效，打开浏览器即玩。支持三套皮肤、画质自动/高清/流畅与手机摇杆。
 
 ## 永久网址
 
@@ -35,16 +35,17 @@ python -m http.server 8000
 | 空格 / Esc | 暂停 / 继续（暂停面板内可进设置） |
 | Enter | 菜单开局（沿用上次难度）/ 结算重开 |
 | M | 静音音效 |
-| 手机滑动屏幕 | 转向 |
-| 手机触屏方向键 | 转向（触屏设备自动显示） |
+| 手机滑动屏幕 | 设定任意方向（360°） |
+| 手机左下摇杆 | 360° 连续转向（触屏自动显示） |
 
 ## 玩法
 
+- **360° 连续移动**：蛇头按摇杆/滑动/方向键的目标角度平滑转向，身体沿轨迹跟随
 - **三档难度**（各自独立最高分）：
   - 悠闲：6 格/秒，不加速，穿墙不死
   - 经典：8 格/秒，每 5 颗果实 +0.3 格/秒，撞墙即死
   - 狂暴：11 格/秒，每 3 颗果实 +0.5 格/秒，撞墙即死
-- **5 种果实**：普通 +10、金果实 +50（6 秒内不吃会消失）、护盾（抵消一次死亡并穿行 1 秒）、减速（8 秒内 ×0.7 速度）、双倍分（10 秒内得分 ×2）
+- **5 种果实**：普通 +10、金果实 +50（6 秒内不吃会消失）、护盾（蛇身外出现蓝色罩子，抵消一次死亡并穿行 1 秒）、减速（紫色光环，8 秒内 ×0.7 速度）、双倍分（金色光环，10 秒内得分 ×2）
 - **连击**：3 秒内连续吃到果实，得分倍率 ×2 ~ ×5
 - **成就**：8 个成就，菜单「成就」页可查看
 - **生涯统计**：总局数 / 总果实 / 最长蛇身 / 各档最高分，均保存在浏览器 localStorage
@@ -61,8 +62,8 @@ python -m http.server 8000
 
 手机打开线上链接即可游玩：竖屏/横屏均适配、滑动转向，并自动显示触屏方向键；低端机可在 设置 → 画质 切到「流畅」；设置 → 「全屏 / 横屏」可全屏并尝试锁定横屏（Android Chrome 支持，iOS 请手动旋转）。
 
-![手机方向键](screenshots/game-2d-mobile-dpad.png)
-![手机横屏](screenshots/game-2d-landscape-dpad.png)
+![手机摇杆](screenshots/game-2d-mobile-joystick.png)
+![手机横屏](screenshots/game-2d-landscape-joystick.png)
 
 ## 项目结构
 
@@ -80,10 +81,10 @@ src/render.js         Canvas 渲染（点阵底板 / 预渲染辉光 / 皮肤 / 
 src/ui.js             菜单 / HUD / 暂停 / 结算 / 成就 / 设置
 src/main.js           状态机 + 主循环 + 成就判定
 tools/build_single.py 单文件构建 → deploy-site/index.html
-tools/sim/selftest.mjs 无头逻辑自测（44 项断言）
+tools/sim/selftest.mjs 无头逻辑自测（35 项断言）
 tools/e2e/smoke.mjs   真实 Chrome 端到端冒烟（20 项断言）
 tools/e2e/real-click.mjs 真实鼠标点击回归（8 项断言）
-tools/e2e/mobile-test.mjs 手机竖屏/横屏触屏方向键验收（11 项断言）
+tools/e2e/mobile-test.mjs 手机竖屏/横屏摇杆验收（11 项断言）
 deploy-site/          构建产物
 ```
 
@@ -98,10 +99,10 @@ bash tools/publish_site.sh   # 构建单文件并推送到 main，GitHub Pages �
 ## 测试与构建
 
 ```bash
-node tools/sim/selftest.mjs     # 逻辑自测：44 项断言
+node tools/sim/selftest.mjs     # 逻辑自测：35 项断言
 node tools/e2e/smoke.mjs        # 浏览器冒烟：开局→吃果→死亡→结算→存档→重开
 node tools/e2e/real-click.mjs   # 真实鼠标点击 + 皮肤/画质设置
-node tools/e2e/mobile-test.mjs  # 手机视口 + 触屏方向键
+node tools/e2e/mobile-test.mjs  # 手机视口 + 摇杆 360° 转向
 python tools/build_single.py    # 重新生成根目录 index.html 与 deploy-site/index.html
 ```
 

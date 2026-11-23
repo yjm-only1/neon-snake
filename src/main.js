@@ -14,7 +14,7 @@ const audio = new AudioEngine(state.settings);
 const effects = new Effects();
 const canvas = document.getElementById('game');
 const renderer = new Renderer(canvas, state.settings);
-const dpadEl = document.getElementById('dpad');
+const joystickEl = document.getElementById('joystick');
 const isTouchDevice = window.matchMedia('(pointer: coarse)').matches;
 document.body.classList.toggle('touch-device', isTouchDevice);
 
@@ -43,8 +43,8 @@ const ui = new UI(state, {
 });
 
 const input = new InputController({
-  onDirection: (dir) => {
-    if (mode === 'playing' && game) game.queueDirection(dir);
+  onAim: (angle) => {
+    if (mode === 'playing' && game && angle != null) game.setAim(angle);
   },
   onPauseToggle: () => togglePause(),
   onConfirm: () => confirmAction(),
@@ -155,7 +155,7 @@ function enterDying() {
   audio.death();
   effects.deathBurst(game.snake);
   const head = game.snake[0];
-  effects.burst(head.x + 0.5, head.y + 0.5, '#ffffff', 26, 9);
+  effects.burst(head.x, head.y, '#ffffff', 26, 9);
   effects.addShake(16);
   effects.addFlash(0.45, game.deadReason === 'wall' ? '#ff4d6d' : '#a04dff');
 }
@@ -189,8 +189,8 @@ function handleEvents(events) {
   for (const event of events) {
     if (event.type === 'eat') {
       const def = FOOD_DEFS[event.food];
-      const cx = event.head.x + 0.5;
-      const cy = event.head.y + 0.5;
+      const cx = event.head.x;
+      const cy = event.head.y;
       if (event.food === 'gold') {
         audio.gold();
         effects.addFlash(0.28, '#ffd23f');
@@ -202,7 +202,12 @@ function handleEvents(events) {
       }
       if (event.food === 'shield' || event.food === 'slow' || event.food === 'double') {
         audio.buff(event.food);
-        effects.floatText(cx, cy - 0.35, def.name, def.color);
+        const label = event.food === 'shield'
+          ? '护盾：抵挡一次'
+          : event.food === 'slow'
+            ? '减速 30% · 8 秒'
+            : '双倍得分 · 10 秒';
+        effects.floatText(cx, cy - 0.45, label, def.color);
       } else if (event.gained > 0) {
         const label = event.combo >= 2 ? `+${event.gained} ×${event.combo}` : `+${event.gained}`;
         effects.floatText(cx, cy - 0.35, label, def.color);
@@ -214,7 +219,7 @@ function handleEvents(events) {
       effects.addFlash(0.35, '#4da3ff');
       effects.addShake(10);
       const head = game.snake[0];
-      effects.floatText(head.x + 0.5, head.y - 0.5, '护盾破碎！', '#9ccaff');
+      effects.floatText(head.x, head.y - 0.5, '护盾破碎！', '#9ccaff');
     }
   }
 }
@@ -264,7 +269,7 @@ function frame(now) {
   if (game) renderer.render(game, effects, now);
   else renderer.renderMenu(now, effects);
 
-  if (dpadEl) dpadEl.classList.toggle('visible', mode === 'playing');
+  if (joystickEl) joystickEl.classList.toggle('visible', mode === 'playing');
 
   requestAnimationFrame(frame);
 }

@@ -17,6 +17,7 @@ ROOT = pathlib.Path(__file__).resolve().parents[1]
 MODULES = [
     ("config", ROOT / "src" / "config.js"),
     ("storage", ROOT / "src" / "storage.js"),
+    ("snakebody", ROOT / "src" / "snake-body.js"),
     ("game", ROOT / "src" / "game.js"),
     ("audio", ROOT / "src" / "audio.js"),
     ("effects", ROOT / "src" / "effects.js"),
@@ -29,6 +30,7 @@ MODULES = [
 SPEC_MAP = {
     "./config.js": "config",
     "./storage.js": "storage",
+    "./snake-body.js": "snakebody",
     "./game.js": "game",
     "./audio.js": "audio",
     "./effects.js": "effects",

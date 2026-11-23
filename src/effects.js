@@ -29,7 +29,7 @@ export class Effects {
     const palette = ['#19f9ff', '#5f7bff', '#a04dff', '#ff4d6d'];
     for (let i = 0; i < cells.length; i++) {
       const seg = cells[i];
-      this.burst(seg.x + 0.5, seg.y + 0.5, palette[i % palette.length], 5, 6.5);
+      this.burst(seg.x, seg.y, palette[i % palette.length], 5, 6.5);
     }
   }
 
