@@ -69,12 +69,12 @@ tools/e2e/smoke.mjs   真实 Chrome 端到端冒烟（需本机 Chrome）
 deploy-site/          构建产物
 ```
 
-## 发布（边界）
+## 发布
 
-公开仓库 `yjm-only1/neon-snake` **只包含构建产物 `index.html`**，源码、工具、截图、测试脚本一律不上传（本地 `dev` 分支仅用于开发，不跟踪远端）。
+公开仓库 `yjm-only1/neon-snake` 发布**整个 neon-snake 工程**（源码、构建脚本、测试、截图均包含）；仓库根目录就是本工程目录，**工程目录之外的任何文件不得进入仓库**。
 
 ```bash
-bash tools/publish_site.sh   # 重新构建并只发布 index.html（孤立提交，强制推送 main）
+bash tools/publish_site.sh   # 构建单文件并推送到 main，GitHub Pages 自动发布
 ```
 
 ## 测试与构建
