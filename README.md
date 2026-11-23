@@ -2,6 +2,13 @@
 
 零依赖、纯 Canvas 的网页贪吃蛇：霓虹街机视觉 + 连击倍率 + 5 种道具果实 + 三档难度 + 合成音效，打开浏览器即玩。
 
+## 永久网址
+
+- **GitHub Pages**：https://yjm-only1.github.io/neon-snake/
+- 仓库：https://github.com/yjm-only1/neon-snake
+
+手机/电脑点开即玩，无需安装；最高分与成就保存在各自浏览器里。
+
 ![主菜单](screenshots/menu-desktop.png)
 ![对局](screenshots/game-mobile.png)
 ![结算](screenshots/gameover-desktop.png)

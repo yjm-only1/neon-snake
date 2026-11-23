@@ -6,7 +6,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
-const CHROME = 'C:/Program Files/Google/Chrome/Application/chrome.exe';
+const CHROME = process.env.BROWSER_PATH || 'C:/Program Files/Google/Chrome/Application/chrome.exe';
 const PORT = 9348;
 const PROFILE = path.join(ROOT, 'Temp', 'chrome-click-profile');
 const URL = 'file:///' + path.join(ROOT, 'index.html').replace(/\\/g, '/');
