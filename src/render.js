@@ -20,8 +20,7 @@ function lerp(a, b, t) {
 function resolveQuality(setting) {
   if (setting === 'low' || setting === 'high') return setting;
   const coarse = typeof window.matchMedia === 'function' && window.matchMedia('(pointer: coarse)').matches;
-  const touch = coarse || (navigator.maxTouchPoints || 0) > 0;
-  return touch ? 'low' : 'high';
+  return coarse ? 'low' : 'high';
 }
 
 export class Renderer {

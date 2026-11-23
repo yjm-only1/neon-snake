@@ -24,7 +24,7 @@ export class UI {
       'btnResume', 'btnRestart', 'btnQuit',
       'gameOverTitle', 'newRecord', 'resultScore', 'resultGrid', 'btnAgain', 'btnToMenu',
       'achCount', 'achList', 'btnAchClose',
-      'setSfx', 'setMusic', 'setGrid', 'setTheme', 'setQuality', 'btnSetClose', 'btnHelpClose',
+      'setSfx', 'setMusic', 'setGrid', 'setTheme', 'setQuality', 'btnFullscreen', 'btnSetClose', 'btnHelpClose',
       'toastLayer',
     ];
     for (const id of ids) this.el[id] = document.getElementById(id);
@@ -51,6 +51,7 @@ export class UI {
     this.el.btnAchClose.addEventListener('click', () => this.hideAchievements());
     this.el.btnSettings.addEventListener('click', () => this.showSettings());
     this.el.btnSetClose.addEventListener('click', () => this.hideSettings());
+    this.el.btnFullscreen.addEventListener('click', () => h.onFullscreen());
     this.el.btnHelp.addEventListener('click', () => this.showHelp());
     this.el.btnHelpClose.addEventListener('click', () => this.hideHelp());
 

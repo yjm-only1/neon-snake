@@ -32,7 +32,7 @@ python -m http.server 8000
 | 输入 | 动作 |
 |---|---|
 | 方向键 / WASD | 转向（自动缓冲 2 步，禁止 180° 反转） |
-| 空格 / Esc | 暂停 / 继续 |
+| 空格 / Esc | 暂停 / 继续（暂停面板内可进设置） |
 | Enter | 菜单开局（沿用上次难度）/ 结算重开 |
 | M | 静音音效 |
 | 手机滑动屏幕 | 转向 |
@@ -59,9 +59,10 @@ python -m http.server 8000
 
 ## 手机浏览器
 
-手机打开线上链接即可游玩：竖屏适配、滑动转向，并自动显示触屏方向键；低端机可在 设置 → 画质 切到「流畅」。
+手机打开线上链接即可游玩：竖屏/横屏均适配、滑动转向，并自动显示触屏方向键；低端机可在 设置 → 画质 切到「流畅」；设置 → 「全屏 / 横屏」可全屏并尝试锁定横屏（Android Chrome 支持，iOS 请手动旋转）。
 
 ![手机方向键](screenshots/game-2d-mobile-dpad.png)
+![手机横屏](screenshots/game-2d-landscape-dpad.png)
 
 ## 项目结构
 
@@ -82,7 +83,7 @@ tools/build_single.py 单文件构建 → deploy-site/index.html
 tools/sim/selftest.mjs 无头逻辑自测（44 项断言）
 tools/e2e/smoke.mjs   真实 Chrome 端到端冒烟（20 项断言）
 tools/e2e/real-click.mjs 真实鼠标点击回归（8 项断言）
-tools/e2e/mobile-test.mjs 手机触屏方向键验收（6 项断言）
+tools/e2e/mobile-test.mjs 手机竖屏/横屏触屏方向键验收（11 项断言）
 deploy-site/          构建产物
 ```
 

@@ -15,7 +15,7 @@ const effects = new Effects();
 const canvas = document.getElementById('game');
 const renderer = new Renderer(canvas, state.settings);
 const dpadEl = document.getElementById('dpad');
-const isTouchDevice = window.matchMedia('(pointer: coarse)').matches || navigator.maxTouchPoints > 0;
+const isTouchDevice = window.matchMedia('(pointer: coarse)').matches;
 document.body.classList.toggle('touch-device', isTouchDevice);
 
 let game = null;
@@ -33,6 +33,7 @@ const ui = new UI(state, {
   onRestart: () => startGame(currentDiff),
   onQuit: () => quitToMenu(),
   onConfirm: () => confirmAction(),
+  onFullscreen: () => toggleFullscreen(),
   onSettingsChanged: () => {
     renderer.applySettings();
     audio.setSettings(state.settings);
@@ -106,6 +107,29 @@ function confirmAction() {
   if (mode === 'menu') startGame(currentDiff);
   else if (mode === 'gameover') startGame(currentDiff);
   else if (mode === 'paused') togglePause();
+}
+
+function toggleFullscreen() {
+  try {
+    if (document.fullscreenElement) {
+      document.exitFullscreen?.();
+      return;
+    }
+    const root = document.documentElement;
+    const request = root.requestFullscreen ? root.requestFullscreen() : null;
+    const lock = () => {
+      if (screen.orientation && screen.orientation.lock) {
+        screen.orientation.lock('landscape').catch(() => ui.toast('已全屏；若未横屏请手动旋转手机', 'hint'));
+      } else {
+        ui.toast('已全屏；若未横屏请手动旋转手机', 'hint');
+      }
+    };
+    if (request && request.then) request.then(lock).catch(() => ui.toast('当前浏览器不支持全屏，请手动旋转手机', 'error'));
+    else if (request) lock();
+    else ui.toast('当前浏览器不支持全屏，请手动旋转手机', 'error');
+  } catch (err) {
+    ui.toast('当前浏览器不支持全屏，请手动旋转手机', 'error');
+  }
 }
 
 function toggleMute() {
