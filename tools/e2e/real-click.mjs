@@ -46,6 +46,17 @@ async function evaluate(cdp, expression) {
   return r.result.value;
 }
 
+async function waitFor(cdp, expression, timeoutMs = 15000) {
+  const start = Date.now();
+  while (Date.now() - start < timeoutMs) {
+    try {
+      if (await evaluate(cdp, expression)) return true;
+    } catch (err) { /* 页面尚未就绪 */ }
+    await sleep(200);
+  }
+  return false;
+}
+
 async function clickReal(cdp, selector) {
   const rect = await evaluate(cdp, `(() => {
     const el = document.querySelector('${selector}');
@@ -85,7 +96,7 @@ async function main() {
     await sleep(800);
 
     console.log('1. 页面脚本已加载');
-    ok(await evaluate(cdp, 'document.querySelectorAll("[data-diff]").length') === 3, '根目录 index.html 双击打开即生成 3 张难度卡');
+    ok(await waitFor(cdp, 'document.querySelectorAll("[data-diff]").length === 3'), '页面生成 3 张难度卡（本地/线上均适用）');
 
     console.log('2. 真实鼠标点击菜单按钮');
     await clickReal(cdp, '#btnAchievements');
