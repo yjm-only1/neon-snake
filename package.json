@@ -1,0 +1,12 @@
+{
+  "name": "neon-snake",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "霓虹贪吃蛇 · Neon Snake — 零依赖 Canvas 网页贪吃蛇",
+  "scripts": {
+    "test": "node tools/sim/selftest.mjs",
+    "e2e": "node tools/e2e/smoke.mjs",
+    "build": "python tools/build_single.py"
+  }
+}
