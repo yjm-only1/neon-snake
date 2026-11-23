@@ -126,8 +126,8 @@ export class Renderer {
     ctx.fill();
 
     if (this.settings.grid) {
-      ctx.fillStyle = rgba(theme.grid, 0.5);
-      const dotRadius = Math.max(0.8, cell * 0.055);
+      ctx.fillStyle = rgba(theme.grid, 0.62);
+      const dotRadius = Math.max(1, cell * 0.07);
       for (let i = 1; i < GRID; i++) {
         for (let j = 1; j < GRID; j++) {
           ctx.beginPath();
