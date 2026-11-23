@@ -31,7 +31,7 @@ python -m http.server 8000
 
 | 输入 | 动作 |
 |---|---|
-| 方向键 / WASD | 转向（自动缓冲 2 步，禁止 180° 反转） |
+| 方向键 / WASD | 设定四个基准方向（可连续改变，含掉头） |
 | 空格 / Esc | 暂停 / 继续（暂停面板内可进设置） |
 | Enter | 菜单开局（沿用上次难度）/ 结算重开 |
 | M | 静音音效 |
@@ -60,7 +60,7 @@ python -m http.server 8000
 
 ## 手机浏览器
 
-手机打开线上链接即可游玩：竖屏/横屏均适配、滑动转向，并自动显示触屏方向键；低端机可在 设置 → 画质 切到「流畅」；设置 → 「全屏 / 横屏」可全屏并尝试锁定横屏（Android Chrome 支持，iOS 请手动旋转）。
+手机打开线上链接即可游玩：竖屏/横屏均适配、滑动转向，并自动显示触屏摇杆；低端机可在 设置 → 画质 切到「流畅」；设置 → 「全屏 / 横屏」可全屏并尝试锁定横屏（Android Chrome 支持，iOS 请手动旋转）。
 
 ![手机摇杆](screenshots/game-2d-mobile-joystick.png)
 ![手机横屏](screenshots/game-2d-landscape-joystick.png)
@@ -75,7 +75,7 @@ src/config.js         难度 / 食物 / 连击 / 成就 / 皮肤主题 / 画质
 src/game.js           核心模拟（纯逻辑无 DOM，可 Node 直跑）
 src/storage.js        localStorage 持久化
 src/audio.js          WebAudio 合成音效与动态 BGM（零素材）
-src/input.js          键盘 + 触屏滑动 + 触屏方向键
+src/input.js          键盘 + 触屏滑动 + 触屏摇杆
 src/effects.js        粒子 / 飘字 / 震屏 / 闪光
 src/render.js         Canvas 渲染（点阵底板 / 预渲染辉光 / 皮肤 / 画质）
 src/ui.js             菜单 / HUD / 暂停 / 结算 / 成就 / 设置
