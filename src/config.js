@@ -86,6 +86,7 @@ export const THEMES = {
 
 export const THEME_LIST = ['neon', 'aurora', 'magma'];
 export const QUALITY_LIST = [
+  { id: 'auto', name: '自动（手机流畅）' },
   { id: 'high', name: '高清' },
   { id: 'low', name: '流畅' },
 ];
@@ -95,4 +96,4 @@ export const COLORS = {
   text: '#eaf6ff',
 };
 
-export const SETTINGS_DEFAULTS = { sfx: true, music: true, grid: true, theme: 'neon', quality: 'high' };
+export const SETTINGS_DEFAULTS = { sfx: true, music: true, grid: true, theme: 'neon', quality: 'auto' };

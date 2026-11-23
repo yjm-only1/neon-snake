@@ -17,13 +17,21 @@ function lerp(a, b, t) {
   return a + (b - a) * t;
 }
 
+function resolveQuality(setting) {
+  if (setting === 'low' || setting === 'high') return setting;
+  const coarse = typeof window.matchMedia === 'function' && window.matchMedia('(pointer: coarse)').matches;
+  const touch = coarse || (navigator.maxTouchPoints || 0) > 0;
+  return touch ? 'low' : 'high';
+}
+
 export class Renderer {
   constructor(canvas, settings) {
     this.canvas = canvas;
     this.ctx = canvas.getContext('2d');
     this.settings = settings;
     this.theme = THEMES[settings.theme] || THEMES.neon;
-    this.quality = settings.quality === 'low' ? 'low' : 'high';
+    this.qualitySetting = settings.quality || 'auto';
+    this.quality = resolveQuality(this.qualitySetting);
     this.width = 0;
     this.height = 0;
     this.dpr = 1;
@@ -40,19 +48,25 @@ export class Renderer {
 
   applySettings() {
     const theme = THEMES[this.settings.theme] || THEMES.neon;
-    const quality = this.settings.quality === 'low' ? 'low' : 'high';
-    if (theme.id === this.theme.id && quality === this.quality) return;
+    const setting = this.settings.quality || 'auto';
+    const quality = resolveQuality(setting);
+    if (theme.id === this.theme.id && quality === this.quality && setting === this.qualitySetting) return;
     this.theme = theme;
+    this.qualitySetting = setting;
     this.quality = quality;
     this.glowCache.clear();
     this.resize();
   }
 
   resize() {
-    const dprCap = this.quality === 'low' ? 1 : 2;
-    this.dpr = Math.min(window.devicePixelRatio || 1, dprCap);
     const width = window.innerWidth;
     const height = window.innerHeight;
+    const cap = this.quality === 'low' ? 1 : 1.75;
+    let dpr = Math.min(window.devicePixelRatio || 1, cap);
+    const maxPixels = 4.2e6; // 高分屏/大窗口上限
+    const pixels = width * height * dpr * dpr;
+    if (pixels > maxPixels) dpr *= Math.sqrt(maxPixels / pixels);
+    this.dpr = Math.max(0.75, dpr);
     this.width = width;
     this.height = height;
     this.canvas.width = Math.max(1, Math.floor(width * this.dpr));
@@ -60,12 +74,14 @@ export class Renderer {
     this.canvas.style.width = `${width}px`;
     this.canvas.style.height = `${height}px`;
 
-    const margin = Math.max(10, Math.min(width, height) * 0.035);
+    const marginFactor = width < 600 ? 0.018 : 0.035;
+    const margin = Math.max(8, Math.min(width, height) * marginFactor);
     const board = Math.max(120, Math.min(width - margin * 2, height - margin * 2));
     this.board = board;
     this.cell = board / GRID;
     this.ox = (width - board) / 2;
-    this.oy = (height - board) / 2;
+    const portrait = width / Math.max(1, height) < 0.8;
+    this.oy = portrait ? margin + (height - board) * 0.28 : (height - board) / 2;
     this.buildBackground();
     this.buildDust();
   }

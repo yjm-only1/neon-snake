@@ -467,6 +467,24 @@ body.touch-device .dpad.visible { display: grid; }
 .dpad-right { grid-area: 2 / 3; }
 .dpad-down { grid-area: 3 / 2; }
 
+body.touch-device .dpad {
+  grid-template-columns: repeat(3, 64px);
+  grid-template-rows: repeat(3, 64px);
+  gap: 8px;
+  left: calc(16px + env(safe-area-inset-left));
+  bottom: calc(20px + env(safe-area-inset-bottom));
+}
+body.touch-device .dpad-btn {
+  font-size: 22px;
+  border-radius: 14px;
+  background: rgba(8, 14, 32, 0.68);
+}
+body.touch-device .icon-btn { width: 48px; height: 48px; font-size: 15px; }
+
+.mobile-hint { display: none; }
+body.touch-device .mobile-hint { display: inline; }
+body.touch-device .desktop-hint { display: none; }
+
 /* ---------- Toast ---------- */
 .toast-layer {
   position: absolute;

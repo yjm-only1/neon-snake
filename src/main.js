@@ -15,10 +15,8 @@ const effects = new Effects();
 const canvas = document.getElementById('game');
 const renderer = new Renderer(canvas, state.settings);
 const dpadEl = document.getElementById('dpad');
-document.body.classList.toggle(
-  'touch-device',
-  window.matchMedia('(pointer: coarse)').matches || navigator.maxTouchPoints > 0,
-);
+const isTouchDevice = window.matchMedia('(pointer: coarse)').matches || navigator.maxTouchPoints > 0;
+document.body.classList.toggle('touch-device', isTouchDevice);
 
 let game = null;
 let mode = 'menu'; // menu | playing | paused | dying | gameover
@@ -79,7 +77,7 @@ function startGame(diffId) {
   audio.setIntensity(88 + game.currentSpeed() * 3.2);
   if (!hintShown) {
     hintShown = true;
-    ui.toast('方向键 / WASD 转向 · 空格暂停 · 手机滑动', 'hint');
+    ui.toast(isTouchDevice ? '滑动屏幕或使用左下方向键转向' : '方向键 / WASD 转向 · 空格暂停 · 手机滑动屏幕', 'hint');
   }
 }
 
