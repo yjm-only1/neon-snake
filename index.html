@@ -93,6 +93,7 @@ html, body {
 
 .diff-card {
   --accent: var(--cyan);
+  min-height: 128px;
   flex: 1 1 180px;
   max-width: 250px;
   min-width: 160px;
@@ -127,12 +128,12 @@ html, body {
 .diff-tag { font-size: clamp(11px, 1.5vw, 13px); color: var(--dim); letter-spacing: 1px; }
 
 .diff-best { font-size: clamp(11px, 1.5vw, 13px); color: var(--text); opacity: 0.85; }
-.diff-best b { color: var(--gold); font-size: 1.15em; margin-left: 4px; }
+.diff-best b { color: var(--gold); font-size: 1.3em; margin-left: 4px; }
 
 .menu-actions { display: flex; gap: 14px; flex-wrap: wrap; justify-content: center; }
 
 .footnote { font-size: clamp(12px, 1.6vw, 14px); color: var(--dim); text-align: center; letter-spacing: 1px; }
-.footnote.dim { opacity: 0.7; font-size: clamp(11px, 1.4vw, 12px); }
+.footnote.dim { opacity: 0.75; font-size: clamp(12px, 1.6vw, 14px); }
 
 /* ---------- 通用按钮 ---------- */
 .primary-btn, .ghost-btn, .icon-btn {
@@ -159,9 +160,9 @@ html, body {
 .primary-btn:hover { transform: translateY(-2px); box-shadow: 0 0 32px rgba(25, 249, 255, 0.7); }
 
 .ghost-btn {
-  padding: 10px 22px;
+  padding: 11px 24px;
   border-radius: 10px;
-  font-size: 15px;
+  font-size: 17px;
   letter-spacing: 2px;
   color: var(--text);
   background: rgba(90, 130, 220, 0.14);
@@ -199,7 +200,7 @@ html, body {
 }
 
 .hud-stat { display: flex; flex-direction: column; align-items: flex-start; line-height: 1.1; }
-.hud-stat .label { font-size: 12px; letter-spacing: 2px; color: var(--dim); }
+.hud-stat .label { font-size: 13px; letter-spacing: 2px; color: var(--dim); }
 .hud-stat b { font-size: clamp(20px, 3.6vw, 28px); font-weight: 800; color: var(--cyan); text-shadow: 0 0 12px rgba(25, 249, 255, 0.5); }
 
 .combo-chip {
