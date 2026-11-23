@@ -9,7 +9,7 @@ const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..')
 const CHROME = process.env.BROWSER_PATH || 'C:/Program Files/Google/Chrome/Application/chrome.exe';
 const PORT = 9348;
 const PROFILE = path.join(ROOT, 'Temp', 'chrome-click-profile');
-const URL = 'file:///' + path.join(ROOT, 'index.html').replace(/\\/g, '/');
+const URL = process.env.GAME_URL || ('file:///' + path.join(ROOT, 'index.html').replace(/\\/g, '/'));
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
 let passed = 0;
@@ -73,7 +73,7 @@ async function main() {
     for (let i = 0; i < 60 && !target; i++) {
       try {
         const list = await (await fetch(`http://127.0.0.1:${PORT}/json/list`)).json();
-        target = list.find((t) => t.type === 'page' && t.url.includes('index.html'));
+        target = list.find((t) => t.type === 'page' && !t.url.startsWith('about:'));
       } catch (err) { /* wait */ }
       if (!target) await sleep(200);
     }
