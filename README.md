@@ -1,6 +1,6 @@
 # 霓虹贪吃蛇 · Neon Snake
 
-零依赖、纯 Canvas 的网页贪吃蛇：霓虹街机视觉 + 连击倍率 + 5 种道具果实 + 三档难度 + 合成音效，打开浏览器即玩。
+零依赖、纯 Canvas 的网页贪吃蛇：霓虹街机视觉 + 连击倍率 + 5 种道具果实 + 三档难度 + 合成音效，打开浏览器即玩。支持三套皮肤、两档画质与手机触屏方向键。
 
 ## 永久网址
 
@@ -36,6 +36,7 @@ python -m http.server 8000
 | Enter | 菜单开局（沿用上次难度）/ 结算重开 |
 | M | 静音音效 |
 | 手机滑动屏幕 | 转向 |
+| 手机触屏方向键 | 转向（触屏设备自动显示） |
 
 ## 玩法
 
@@ -47,6 +48,20 @@ python -m http.server 8000
 - **连击**：3 秒内连续吃到果实，得分倍率 ×2 ~ ×5
 - **成就**：8 个成就，菜单「成就」页可查看
 - **生涯统计**：总局数 / 总果实 / 最长蛇身 / 各档最高分，均保存在浏览器 localStorage
+- **皮肤 / 画质**：霓虹 / 极光 / 熔岩三套皮肤；高清 / 流畅两档画质，设置里实时切换并保存
+
+## 皮肤
+
+设置 → 皮肤：点阵底板、边框光晕与蛇身配色会一起切换。
+
+![极光皮肤](screenshots/menu-aurora.png)
+![熔岩皮肤](screenshots/menu-magma.png)
+
+## 手机浏览器
+
+手机打开线上链接即可游玩：竖屏适配、滑动转向，并自动显示触屏方向键；低端机可在 设置 → 画质 切到「流畅」。
+
+![手机方向键](screenshots/game-2d-mobile-dpad.png)
 
 ## 项目结构
 
@@ -54,18 +69,20 @@ python -m http.server 8000
 dev.html              源码页面（本地服务器访问，引用 src/main.js）
 index.html            单文件构建产物（双击即玩，由 build_single.py 生成）
 css/style.css         霓虹主题样式
-src/config.js         难度 / 食物 / 连击 / 成就 / 配色常量
+src/config.js         难度 / 食物 / 连击 / 成就 / 皮肤主题 / 画质
 src/game.js           核心模拟（纯逻辑无 DOM，可 Node 直跑）
 src/storage.js        localStorage 持久化
 src/audio.js          WebAudio 合成音效与动态 BGM（零素材）
-src/input.js          键盘 + 触屏滑动
+src/input.js          键盘 + 触屏滑动 + 触屏方向键
 src/effects.js        粒子 / 飘字 / 震屏 / 闪光
-src/render.js         Canvas 渲染（平滑插值 / 发光 / 穿墙断线）
+src/render.js         Canvas 渲染（点阵底板 / 预渲染辉光 / 皮肤 / 画质）
 src/ui.js             菜单 / HUD / 暂停 / 结算 / 成就 / 设置
 src/main.js           状态机 + 主循环 + 成就判定
 tools/build_single.py 单文件构建 → deploy-site/index.html
 tools/sim/selftest.mjs 无头逻辑自测（44 项断言）
-tools/e2e/smoke.mjs   真实 Chrome 端到端冒烟（需本机 Chrome）
+tools/e2e/smoke.mjs   真实 Chrome 端到端冒烟（20 项断言）
+tools/e2e/real-click.mjs 真实鼠标点击回归（8 项断言）
+tools/e2e/mobile-test.mjs 手机触屏方向键验收（6 项断言）
 deploy-site/          构建产物
 ```
 
@@ -80,14 +97,17 @@ bash tools/publish_site.sh   # 构建单文件并推送到 main，GitHub Pages �
 ## 测试与构建
 
 ```bash
-node tools/sim/selftest.mjs   # 逻辑自测：44 项断言
-node tools/e2e/smoke.mjs      # 浏览器冒烟：开局→吃果→死亡→结算→存档→重开
-python tools/build_single.py  # 重新生成根目录 index.html 与 deploy-site/index.html
+node tools/sim/selftest.mjs     # 逻辑自测：44 项断言
+node tools/e2e/smoke.mjs        # 浏览器冒烟：开局→吃果→死亡→结算→存档→重开
+node tools/e2e/real-click.mjs   # 真实鼠标点击 + 皮肤/画质设置
+node tools/e2e/mobile-test.mjs  # 手机视口 + 触屏方向键
+python tools/build_single.py    # 重新生成根目录 index.html 与 deploy-site/index.html
 ```
 
 ## 技术要点
 
 - 模拟与渲染分离：固定 60fps rAF 驱动、按「格/秒」步进，蛇身在格间插值渲染
+- 性能：静态背景（渐变 / 点阵 / 边框 / 暗角）一次烘焙逐帧贴图；辉光改为预渲染贴图，去掉逐帧 shadowBlur；流畅档降低渲染分辨率并关闭尘埃与辉光
 - 音效/音乐全部由 WebAudio 振荡器实时合成，无任何音频素材文件
 - 单文件构建：模块源码内联为 Blob 模块按拓扑序装载，产物可离线双击运行
 - 调试入口：`index.html#play=classic` 可直接跳进对局（`chill` / `classic` / `insane`）

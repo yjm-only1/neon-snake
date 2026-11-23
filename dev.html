@@ -37,7 +37,7 @@
   <!-- 主菜单 -->
   <div id="menu" class="screen">
     <h1 class="title">霓虹贪吃蛇</h1>
-    <p class="subtitle">N E O N &nbsp; S N A K E</p>
+    <p class="subtitle">N E O N &nbsp; S N A K E &nbsp; · &nbsp; C L A S S I C</p>
     <div id="diffRow" class="diff-row"></div>
     <div class="menu-actions">
       <button id="btnAchievements" class="ghost-btn">成就</button>
@@ -85,7 +85,9 @@
       <h2>设置</h2>
       <label class="toggle-row"><span>音效</span><input type="checkbox" id="setSfx"></label>
       <label class="toggle-row"><span>背景音乐</span><input type="checkbox" id="setMusic"></label>
-      <label class="toggle-row"><span>网格线</span><input type="checkbox" id="setGrid"></label>
+      <label class="toggle-row"><span>网格点阵</span><input type="checkbox" id="setGrid"></label>
+      <label class="toggle-row"><span>皮肤</span><select id="setTheme" class="theme-select"></select></label>
+      <label class="toggle-row"><span>画质</span><select id="setQuality" class="theme-select"></select></label>
       <button id="btnSetClose" class="ghost-btn">关闭</button>
     </div>
   </div>
@@ -101,10 +103,18 @@
         <li>减速：8 秒内速度降低 30%，救急用</li>
         <li>双倍：10 秒内所有得分 ×2</li>
         <li>悠闲档穿墙不死，经典 / 狂暴档撞墙即死</li>
-        <li>键盘：方向键 / WASD 转向，空格暂停，M 静音；手机：滑动转向</li>
+        <li>设置里可切换皮肤（霓虹 / 极光 / 熔岩）与画质（高清 / 流畅）</li>
+        <li>键盘：方向键 / WASD 转向，空格暂停，M 静音；手机：滑动屏幕转向</li>
       </ul>
       <button id="btnHelpClose" class="ghost-btn">知道了</button>
     </div>
+  </div>
+
+  <div id="dpad" class="dpad">
+    <button class="dpad-btn dpad-up" data-dir="up" aria-label="上">▲</button>
+    <button class="dpad-btn dpad-left" data-dir="left" aria-label="左">◀</button>
+    <button class="dpad-btn dpad-right" data-dir="right" aria-label="右">▶</button>
+    <button class="dpad-btn dpad-down" data-dir="down" aria-label="下">▼</button>
   </div>
 
   <div id="toastLayer" class="toast-layer"></div>

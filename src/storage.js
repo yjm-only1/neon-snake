@@ -1,5 +1,5 @@
 // localStorage 持久化：每档最高分 / 生涯统计 / 成就 / 设置
-import { STORAGE_KEY, DIFFICULTY_LIST, SETTINGS_DEFAULTS } from './config.js';
+import { STORAGE_KEY, DIFFICULTY_LIST, SETTINGS_DEFAULTS, THEME_LIST, QUALITY_LIST } from './config.js';
 
 function defaultState() {
   const bests = {};
@@ -36,6 +36,8 @@ export function loadState() {
     for (const key of Object.keys(state.settings)) {
       if (typeof cfg[key] === 'boolean') state.settings[key] = cfg[key];
     }
+    if (THEME_LIST.includes(cfg.theme)) state.settings.theme = cfg.theme;
+    if (QUALITY_LIST.some((item) => item.id === cfg.quality)) state.settings.quality = cfg.quality;
     return state;
   } catch (err) {
     return state;

@@ -1,5 +1,5 @@
 // DOM 界面：主菜单 / HUD / 暂停 / 结算 / 成就 / 设置 / Toast
-import { DIFFICULTY_LIST, DIFFICULTIES, ACHIEVEMENTS } from './config.js';
+import { DIFFICULTY_LIST, DIFFICULTIES, ACHIEVEMENTS, THEMES, THEME_LIST, QUALITY_LIST } from './config.js';
 
 function formatDuration(ms) {
   const total = Math.max(0, Math.round(ms / 1000));
@@ -24,10 +24,16 @@ export class UI {
       'btnResume', 'btnRestart', 'btnQuit',
       'gameOverTitle', 'newRecord', 'resultScore', 'resultGrid', 'btnAgain', 'btnToMenu',
       'achCount', 'achList', 'btnAchClose',
-      'setSfx', 'setMusic', 'setGrid', 'btnSetClose', 'btnHelpClose',
+      'setSfx', 'setMusic', 'setGrid', 'setTheme', 'setQuality', 'btnSetClose', 'btnHelpClose',
       'toastLayer',
     ];
     for (const id of ids) this.el[id] = document.getElementById(id);
+    this.el.setTheme.innerHTML = THEME_LIST
+      .map((id) => `<option value="${id}">${THEMES[id].name}</option>`)
+      .join('');
+    this.el.setQuality.innerHTML = QUALITY_LIST
+      .map((item) => `<option value="${item.id}">${item.name}</option>`)
+      .join('');
     this.bind();
     this.buildDifficultyCards();
     this.applySettings();
@@ -54,6 +60,14 @@ export class UI {
         h.onSettingsChanged();
       });
     }
+    this.el.setTheme.addEventListener('change', () => {
+      this.state.settings.theme = this.el.setTheme.value;
+      h.onSettingsChanged();
+    });
+    this.el.setQuality.addEventListener('change', () => {
+      this.state.settings.quality = this.el.setQuality.value;
+      h.onSettingsChanged();
+    });
   }
 
   buildDifficultyCards() {
@@ -89,6 +103,8 @@ export class UI {
     this.el.setSfx.checked = this.state.settings.sfx;
     this.el.setMusic.checked = this.state.settings.music;
     this.el.setGrid.checked = this.state.settings.grid;
+    this.el.setTheme.value = this.state.settings.theme;
+    this.el.setQuality.value = this.state.settings.quality;
   }
 
   setScreen(name) {

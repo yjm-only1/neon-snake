@@ -74,6 +74,27 @@ async function main() {
 
     await shot(cdp, 'menu-mobile.png');
 
+    // 皮肤切换截图
+    for (const theme of ['aurora', 'magma']) {
+      await evaluate(cdp, `(() => {
+        document.getElementById('btnSettings').click();
+        const el = document.getElementById('setTheme');
+        el.value = '${theme}';
+        el.dispatchEvent(new Event('change'));
+        document.getElementById('btnSetClose').click();
+      })()`);
+      await sleep(400);
+      await shot(cdp, `menu-${theme}.png`);
+    }
+    await evaluate(cdp, `(() => {
+      document.getElementById('btnSettings').click();
+      const el = document.getElementById('setTheme');
+      el.value = 'neon';
+      el.dispatchEvent(new Event('change'));
+      document.getElementById('btnSetClose').click();
+    })()`);
+    await sleep(300);
+
     // 悠闲档（穿墙不死）：吃两颗金果展示连击飘字
     await evaluate(cdp, 'document.querySelector(\'[data-diff="chill"]\').click()');
     await sleep(500);

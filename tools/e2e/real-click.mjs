@@ -105,6 +105,26 @@ async function main() {
     ok(await evaluate(cdp, 'document.getElementById("achievementsOverlay").classList.contains("hidden")'), '「关闭」可点');
     await clickReal(cdp, '#btnSettings');
     ok(await evaluate(cdp, '!document.getElementById("settingsOverlay").classList.contains("hidden")'), '「设置」可点开');
+    await evaluate(cdp, `(() => {
+      const theme = document.getElementById('setTheme');
+      theme.value = 'aurora';
+      theme.dispatchEvent(new Event('change'));
+      const quality = document.getElementById('setQuality');
+      quality.value = 'low';
+      quality.dispatchEvent(new Event('change'));
+    })()`);
+    await sleep(400);
+    const savedSettings = JSON.parse(await evaluate(cdp, 'localStorage.getItem("neonSnake.v1")')).settings;
+    ok(savedSettings.theme === 'aurora' && savedSettings.quality === 'low', '皮肤与画质设置已保存');
+    await evaluate(cdp, `(() => {
+      const theme = document.getElementById('setTheme');
+      theme.value = 'neon';
+      theme.dispatchEvent(new Event('change'));
+      const quality = document.getElementById('setQuality');
+      quality.value = 'high';
+      quality.dispatchEvent(new Event('change'));
+    })()`);
+    await sleep(300);
     await clickReal(cdp, '#btnSetClose');
     await clickReal(cdp, '#btnHelp');
     ok(await evaluate(cdp, '!document.getElementById("helpOverlay").classList.contains("hidden")'), '「玩法」可点开');

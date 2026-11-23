@@ -14,6 +14,11 @@ const audio = new AudioEngine(state.settings);
 const effects = new Effects();
 const canvas = document.getElementById('game');
 const renderer = new Renderer(canvas, state.settings);
+const dpadEl = document.getElementById('dpad');
+document.body.classList.toggle(
+  'touch-device',
+  window.matchMedia('(pointer: coarse)').matches || navigator.maxTouchPoints > 0,
+);
 
 let game = null;
 let mode = 'menu'; // menu | playing | paused | dying | gameover
@@ -31,6 +36,7 @@ const ui = new UI(state, {
   onQuit: () => quitToMenu(),
   onConfirm: () => confirmAction(),
   onSettingsChanged: () => {
+    renderer.applySettings();
     audio.setSettings(state.settings);
     if (state.settings.music && mode === 'playing') audio.startMusic();
     saveState(state);
@@ -235,6 +241,8 @@ function frame(now) {
 
   if (game) renderer.render(game, effects, now);
   else renderer.renderMenu(now, effects);
+
+  if (dpadEl) dpadEl.classList.toggle('visible', mode === 'playing');
 
   requestAnimationFrame(frame);
 }

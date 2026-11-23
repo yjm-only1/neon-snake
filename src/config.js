@@ -59,17 +59,40 @@ export const ACHIEVEMENTS = [
   { id: 'all_fruits',  name: '大满贯',     desc: '单局集齐全部 5 种果实' },
 ];
 
+// 皮肤主题：与 3D 版同一套配色
+export const THEMES = {
+  neon: {
+    id: 'neon', name: '霓虹',
+    bgTop: '#0d1430', bgBottom: '#04050d',
+    board: '#0b1228', boardAccent: '#16224a',
+    grid: '#5a78ff', border: '#4f7bff', glow: '#19f9ff',
+    snakeHead: '#19f9ff', snakeMid: '#5f7bff', snakeTail: '#a04dff',
+  },
+  aurora: {
+    id: 'aurora', name: '极光',
+    bgTop: '#062a2a', bgBottom: '#020b0c',
+    board: '#06201f', boardAccent: '#0d3a34',
+    grid: '#37e0c0', border: '#2fd8b0', glow: '#64ffda',
+    snakeHead: '#64ffda', snakeMid: '#2fd8b0', snakeTail: '#1f9e88',
+  },
+  magma: {
+    id: 'magma', name: '熔岩',
+    bgTop: '#2a0d06', bgBottom: '#0b0302',
+    board: '#1e0a08', boardAccent: '#3a140c',
+    grid: '#ff8a5c', border: '#ff6a3d', glow: '#ffb347',
+    snakeHead: '#ffb347', snakeMid: '#ff6a3d', snakeTail: '#b0301a',
+  },
+};
+
+export const THEME_LIST = ['neon', 'aurora', 'magma'];
+export const QUALITY_LIST = [
+  { id: 'high', name: '高清' },
+  { id: 'low', name: '流畅' },
+];
+
 export const COLORS = {
-  bg: '#070a14',
-  bgGlow: '#0d1430',
-  grid: 'rgba(80, 120, 255, 0.07)',
-  border: 'rgba(80, 120, 255, 0.22)',
-  snakeHead: '#19f9ff',
-  snakeMid: '#5f7bff',
-  snakeTail: '#a04dff',
-  snakeGlow: 'rgba(25, 249, 255, 0.55)',
   shieldRing: 'rgba(77, 163, 255, 0.9)',
   text: '#eaf6ff',
 };
 
-export const SETTINGS_DEFAULTS = { sfx: true, music: true, grid: true };
+export const SETTINGS_DEFAULTS = { sfx: true, music: true, grid: true, theme: 'neon', quality: 'high' };
