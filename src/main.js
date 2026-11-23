@@ -16,6 +16,12 @@ const canvas = document.getElementById('game');
 const renderer = new Renderer(canvas, state.settings);
 const joystickEl = document.getElementById('joystick');
 const isTouchDevice = window.matchMedia('(pointer: coarse)').matches;
+function syncFullscreenClass() {
+  document.body.classList.toggle('fullscreen', !!document.fullscreenElement);
+}
+document.addEventListener('fullscreenchange', syncFullscreenClass);
+syncFullscreenClass();
+
 document.body.classList.toggle('touch-device', isTouchDevice);
 
 let game = null;

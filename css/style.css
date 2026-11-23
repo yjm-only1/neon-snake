@@ -163,8 +163,8 @@ html, body {
 .ghost-btn:hover { background: rgba(90, 130, 220, 0.28); }
 
 .icon-btn {
-  width: 42px;
-  height: 42px;
+  width: 50px;
+  height: 50px;
   border-radius: 10px;
   font-size: 14px;
   letter-spacing: 0;
@@ -191,7 +191,7 @@ html, body {
 }
 
 .hud-stat { display: flex; flex-direction: column; align-items: flex-start; line-height: 1.1; }
-.hud-stat .label { font-size: 13px; letter-spacing: 2px; color: var(--dim); }
+.hud-stat .label { font-size: 13px; letter-spacing: 2px; color: #c6d8f2; }
 .hud-stat b { font-size: clamp(20px, 3.6vw, 28px); font-weight: 800; color: var(--cyan); text-shadow: 0 0 12px rgba(25, 249, 255, 0.5); }
 
 .combo-chip {
@@ -468,7 +468,7 @@ body.touch-device .joystick.visible { display: block; }
   pointer-events: none;
   will-change: transform;
 }
-body.touch-device .icon-btn { width: 48px; height: 48px; font-size: 15px; }
+body.touch-device .icon-btn { width: 60px; height: 60px; font-size: 18px; }
 
 .mobile-hint { display: none; }
 body.touch-device .mobile-hint { display: inline; }
@@ -555,3 +555,12 @@ body.touch-device .desktop-hint { display: none; }
   .toast { font-size: 12px; padding: 6px 14px; }
   .diff-chip { display: none; }
 }
+
+
+/* 全屏时恢复紧凑尺寸：放大只作用于非全屏/窗口模式 */
+body.fullscreen .hud-stat .label { font-size: 12px; }
+body.fullscreen .hud-stat b { font-size: clamp(24px, 3.8vw, 34px); }
+body.fullscreen .diff-chip { top: calc(78px + env(safe-area-inset-top)); font-size: 13px; }
+body.fullscreen .lan-mode-chip { font-size: 14px; padding: 6px 16px; }
+body.fullscreen .icon-btn { width: 42px; height: 42px; font-size: 13px; }
+body.fullscreen.touch-device .icon-btn { width: 46px; height: 46px; font-size: 14px; }
